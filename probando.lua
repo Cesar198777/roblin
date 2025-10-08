@@ -1,64 +1,31 @@
-repeat task.wait(.12345) until game:IsLoaded()
+local KeySystem = loadstring(game:HttpGet("https://raw.githubusercontent.com/OopssSorry/LuaU-Free-Key-System-UI/main/source.lua"))()
+local KeyValid = true
+local api = loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.lua"))()
+api.script_id = "e42ca5977461347379fb8314638349cf" -- Your Script ID
 
-if  game.gameId == 111111111 then
-    --[[
-    loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/180154ec7abc246752b60603a7adc12d.lua"))()
-    ]]
-
-    local ui = loadstring(game:HttpGet("https://raw.githubusercontent.com/diepedyt/customLua/main/SimpleUiLib.lua"))()
-    --ui.CreateBHUBPAID("Anime Eternal")
-    ui.CreateBHUBPAID("Anime Eternal", "AE [V4.2] test is done! It’s paid now. Thanks — your testing helped a lot!")
-    
-    local vu = game:GetService("VirtualUser")
-    game:GetService("Players").LocalPlayer.Idled:connect(function()
-        vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-        task.wait(1)
-        vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-    end)
-    
-    task.spawn(function()
-        local VirtualInputManager = game:GetService("VirtualInputManager")
-        local X, Y = 111, 960
-        while task.wait() do
-            --VirtualInputManager:SendMouseButtonEvent(X, Y, 0, true, game, 1)
-            --VirtualInputManager:SendMouseButtonEvent(X, Y, 0, false, game, 1)
-            VirtualInputManager:SendKeyEvent(true, "Space", false, game)
-            task.wait(.2)
-            VirtualInputManager:SendKeyEvent(false, "Space", false, game)
-            task.wait(600)
+local response = KeySystem:Init({
+    Debug = false, -- <bool> Prints some output in console when true
+    Title="*nullptr | Key System", -- <string or nil> Title of key system
+    Description=nil, -- <string or nil> Description of key system
+    Link = "https://ads.luarmor.net/get_key?for=-ouxUMfiLIJEG", -- <string> String to get key
+    Discord = "test", -- <string or nil> Button to join your discord server
+    SaveKey = false, -- <bool or nil> Just auto save key
+    Verify = function(key) -- <function> Verify is key valid
+        local status = api.check_key(key)
+        warn(key)
+        if (status.code == "KEY_VALID") then         
+            key = key -- SET THE KEY BEFORE LOADSTRINGING.
+            warn("KEY_VALID")
+            api.load_script(); -- Executes the script, based on the script_id you put above.
+            return
+            
+        elseif (status.code == "KEY_HWID_LOCKED") then
+            return
+            
+        elseif (status.code == "KEY_INCORRECT") then
+            return    
+        else
+            warn("KEY_INVALID")
         end
-    end)
-    
-else
-    
-    --[[
-    loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/180154ec7abc246752b60603a7adc12d.lua"))()
-    ]]
-
-    local ui = loadstring(game:HttpGet("https://raw.githubusercontent.com/diepedyt/customLua/main/SimpleUiLib.lua"))()
-    ui.CreateBHUBPAID("")
-    
-    local vu = game:GetService("VirtualUser")
-    game:GetService("Players").LocalPlayer.Idled:connect(function()
-        vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-        task.wait(1)
-        vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-    end)
-    
-    task.spawn(function()
-        local VirtualInputManager = game:GetService("VirtualInputManager")
-        local X, Y = 111, 960
-        while task.wait() do
-            --VirtualInputManager:SendMouseButtonEvent(X, Y, 0, true, game, 1)
-            --VirtualInputManager:SendMouseButtonEvent(X, Y, 0, false, game, 1)
-            VirtualInputManager:SendKeyEvent(true, "Space", false, game)
-            task.wait(.2)
-            VirtualInputManager:SendKeyEvent(false, "Space", false, game)
-            task.wait(600)
-        end
-    end)
-    
-end
-
-
-
+    end,
+})
